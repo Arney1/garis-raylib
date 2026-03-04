@@ -70,34 +70,34 @@ void DrawMenu(void) {
             int x = (c1 + c2)/2+18, spx = 10;
 
             //A
-            BresenhamLine(x+spx, startY, x, endY, BLUE);
-            BresenhamLine(x+spx, startY, x+2*spx, endY, BLUE);
-            BresenhamLine(x+3*spx/2, midY, x+spx/2, midY, BLUE);
+                BresenhamLine(x+spx, startY, x, endY, BLUE);
+                BresenhamLine(x+spx, startY, x+2*spx, endY, BLUE);
+                BresenhamLine(x+3*spx/2, midY, x+spx/2, midY, BLUE);
 
-            x += 3*spx;
-            //r
-            BresenhamLine(x, midY, x, endY, BLUE);
-            BresenhamLine(x, midY+20, x+spx, midY, BLUE);
+                x += 3*spx;
+                //r
+                BresenhamLine(x, midY, x, endY, BLUE);
+                BresenhamLine(x, midY, x+spx, midY, BLUE);
 
-            x += 2*spx;
-            //k
-            BresenhamLine(x, startY, x, endY, BLUE);
-            BresenhamLine(x, midY+(endY-midY)/2, x+spx, endY, BLUE);
-            BresenhamLine(x, midY+(endY-midY)/2, x+spx, midY, BLUE);
+                x += 2*spx;
+                //k
+                BresenhamLine(x, startY, x, endY, BLUE);
+                BresenhamLine(x, midY+(endY-midY)/2, x+spx, endY, BLUE);
+                BresenhamLine(x, midY+(endY-midY)/2, x+spx, midY, BLUE);
 
-            x += 2*spx;
-            //a
-            BresenhamLine(x, midY, x+spx, midY, BLUE);
-            BresenhamLine(x+spx, midY, x+spx, endY, BLUE);
-            BresenhamLine(x+20, midY+(endY-midY)/2, x+spx, midY+(endY-midY)/2, BLUE);
-            BresenhamLine(x+20, midY+(endY-midY)/2, x, endY, BLUE);
-            BresenhamLine(x, endY, x+spx, endY, BLUE);
+                x += 2*spx;
+                //a
+                BresenhamLine(x, midY, x+spx, midY, BLUE);
+                BresenhamLine(x+spx, midY, x+spx, endY, BLUE);
+                BresenhamLine(x+spx/5, midY+(endY-midY)/2, x+spx, midY+(endY-midY)/2, BLUE);
+                BresenhamLine(x+spx/5, midY+(endY-midY)/2, x, endY, BLUE);
+                BresenhamLine(x, endY, x+spx, endY, BLUE);
 
-            x += 2*spx;
-            //n
-            BresenhamLine(x, midY, x, endY, BLUE);
-            BresenhamLine(x, midY+10, x+spx, midY, BLUE);
-            BresenhamLine(x+spx, midY, x+spx, endY, BLUE);
+                x += 2*spx;
+                //n
+                BresenhamLine(x, midY, x, endY, BLUE);
+                BresenhamLine(x, midY, x+spx, midY, BLUE);
+                BresenhamLine(x+spx, midY, x+spx, endY, BLUE);
         DrawText("Nama Panggilan", (c1 + c2)/2+18, r[2]+110, 13, LIGHTGRAY);
         DrawText("[Tekan 5]", (c1 + c2)/2+cW-100, r[2]+cH-28, 16, RED);
 

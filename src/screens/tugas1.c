@@ -23,7 +23,7 @@ void DrawTugas1(void) {
     x += 3*spx;
     //r
     BresenhamLine(x, midY, x, endY, BLUE);
-    BresenhamLine(x, midY+(midY/8), x+spx, midY, BLUE);
+    BresenhamLine(x, midY, x+spx, midY, BLUE);
 
     x += 2*spx;
     //k
@@ -35,13 +35,13 @@ void DrawTugas1(void) {
     //a
     BresenhamLine(x, midY, x+spx, midY, BLUE);
     BresenhamLine(x+spx, midY, x+spx, endY, BLUE);
-    BresenhamLine(x+20, midY+(endY-midY)/2, x+spx, midY+(endY-midY)/2, BLUE);
-    BresenhamLine(x+20, midY+(endY-midY)/2, x, endY, BLUE);
+    BresenhamLine(x+spx/5, midY+(endY-midY)/2, x+spx, midY+(endY-midY)/2, BLUE);
+    BresenhamLine(x+spx/5, midY+(endY-midY)/2, x, endY, BLUE);
     BresenhamLine(x, endY, x+spx, endY, BLUE);
 
     x += 2*spx;
     //n
     BresenhamLine(x, midY, x, endY, BLUE);
-    BresenhamLine(x, midY+10, x+spx, midY, BLUE);
+    BresenhamLine(x, midY, x+spx, midY, BLUE);
     BresenhamLine(x+spx, midY, x+spx, endY, BLUE);
 }
