@@ -8,7 +8,6 @@ SRCS = main.c \
        coords.c \
        src/algo/dda.c \
        src/algo/bresenham.c \
-       src/algo/midcircle.c \
        src/ui/primitives.c \
        src/ui/back_button.c \
        src/ui/cartesian.c \
@@ -16,11 +15,7 @@ SRCS = main.c \
        src/screens/program2.c \
        src/screens/program3.c \
        src/screens/program4.c \
-       src/screens/program5.c \
-       src/screens/program6.c \
-       src/screens/program7.c \
-       src/screens/program8.c \
-       src/screens/program9.c \
+       src/screens/tugas1.c \
        src/screens/about.c \
        src/screens/menu.c
 

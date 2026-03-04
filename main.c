@@ -6,11 +6,7 @@
 #include "src/screens/program2.h"
 #include "src/screens/program3.h"
 #include "src/screens/program4.h"
-#include "src/screens/program5.h"
-#include "src/screens/program6.h"
-#include "src/screens/program7.h"
-#include "src/screens/program8.h"
-#include "src/screens/program9.h"
+#include "src/screens/tugas1.h"
 #include "src/screens/about.h"
 
 int main(void) {
@@ -27,25 +23,8 @@ int main(void) {
             if (IsKeyPressed(KEY_TWO)   || IsKeyPressed(KEY_KP_2)) current = PROGRAM2;
             if (IsKeyPressed(KEY_THREE) || IsKeyPressed(KEY_KP_3)) current = PROGRAM3;
             if (IsKeyPressed(KEY_FOUR)  || IsKeyPressed(KEY_KP_4)) current = PROGRAM4;
-            if (IsKeyPressed(KEY_FIVE)  || IsKeyPressed(KEY_KP_5)) current = PROGRAM5;
-            if (IsKeyPressed(KEY_SIX)   || IsKeyPressed(KEY_KP_6)) current = PROGRAM6;
-            if (IsKeyPressed(KEY_SEVEN) || IsKeyPressed(KEY_KP_7)) current = PROGRAM7;
-            if (IsKeyPressed(KEY_EIGHT) || IsKeyPressed(KEY_KP_8)) current = PROGRAM8;
-            if (IsKeyPressed(KEY_NINE)  || IsKeyPressed(KEY_KP_9)) current = PROGRAM9;
+            if (IsKeyPressed(KEY_FIVE)  || IsKeyPressed(KEY_KP_5)) current = TUGAS1;
             if (IsKeyPressed(KEY_A)) current = ABOUT;
-            
-            // Handle mouse click on program cards
-            int clicked = GetClickedProgram();
-            if (clicked == 1) current = PROGRAM1;
-            if (clicked == 2) current = PROGRAM2;
-            if (clicked == 3) current = PROGRAM3;
-            if (clicked == 4) current = PROGRAM4;
-            if (clicked == 5) current = PROGRAM5;
-            if (clicked == 6) current = PROGRAM6;
-            if (clicked == 7) current = PROGRAM7;
-            if (clicked == 8) current = PROGRAM8;
-            if (clicked == 9) current = PROGRAM9;
-            
             Vector2 m = GetMousePosition();
             if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) &&
                 CheckCollisionPointRec(m, (Rectangle){abBtnX, abBtnY, 160, 36}))
@@ -60,11 +39,7 @@ int main(void) {
             case PROGRAM2: DrawProgram2(); break;
             case PROGRAM3: DrawProgram3(); break;
             case PROGRAM4: DrawProgram4(); break;
-            case PROGRAM5: DrawProgram5(); break;
-            case PROGRAM6: DrawProgram6(); break;
-            case PROGRAM7: DrawProgram7(); break;
-            case PROGRAM8: DrawProgram8(); break;
-            case PROGRAM9: DrawProgram9(); break;
+            case TUGAS1: DrawTugas1(); break;
             case ABOUT:    DrawAbout();    break;
         }
         EndDrawing();

@@ -1,8 +1,8 @@
-# Grafika Komputer — Algoritma DDA, Bresenham & Midpoint Circle
+# Grafika Komputer — Algoritma DDA & Bresenham
 
-Aplikasi desktop interaktif menggunakan **Raylib** dan **C** yang mendemonstrasikan sembilan program gambar garis dan lingkaran berbasis algoritma rasterisasi klasik.
+Aplikasi desktop interaktif menggunakan **Raylib** dan **C** yang mendemonstrasikan empat program gambar garis berbasis algoritma rasterisasi klasik.
 
-> **Catatan penting:** Tidak ada fungsi gambar garis/lingkaran bawaan Raylib yang digunakan. Setiap piksel digambar menggunakan `DrawPixel()` dari implementasi DDA, Bresenham, atau Midpoint Circle yang ditulis sendiri.
+> **Catatan penting:** Tidak ada fungsi gambar garis bawaan Raylib yang digunakan. Setiap piksel digambar menggunakan `DrawPixel()` dari implementasi DDA atau Bresenham yang ditulis sendiri.
 
 ---
 
@@ -14,11 +14,6 @@ Aplikasi desktop interaktif menggunakan **Raylib** dan **C** yang mendemonstrasi
 | 2 | DDA | Berbagai style garis (normal, dash, tebal, dash-dot) |
 | 3 | Bresenham | Diagram Kartesian — garis lurus pada sumbu XY |
 | 4 | Bresenham | Berbagai style garis (normal, dash, tebal, dash-dot) |
-| 5 | Midpoint Circle | Lingkaran dengan 8-way symmetry (integer only) |
-| 6 | Midpoint Circle | Flower of Life Pattern — pola geometri sakral |
-| 7 | Midpoint Circle | Animated Flower of Life — transisi lingkaran ke lensa |
-| 8 | Midpoint Circle | Vesica Piscis (4 Kelopak Murni) — tanpa lingkaran tengah |
-| 9 | Midpoint Circle | Vesica Piscis (4 Arah Mata Angin) — metode pergeseran titik jari-jari |
 
 ---
 
@@ -33,8 +28,7 @@ Kode sumber dipisah menjadi modul-modul yang mandiri:
 │
 ├── src/algo/
 │   ├── dda.h + dda.c             ← DDALine, DDA_DashedLine, DDA_ThickLine, DDA_DashDotLine
-│   ├── bresenham.h + bresenham.c ← BresenhamLine, Bres_DashedLine, Bres_ThickLine, Bres_DashDotLine
-│   └── midcircle.h + midcircle.c ← Midcircle, MidcircleFilled, MidcircleThick, MidcircleDashed
+│   └── bresenham.h + bresenham.c ← BresenhamLine, Bres_DashedLine, Bres_ThickLine, Bres_DashDotLine
 │
 ├── src/ui/
 │   ├── primitives.h + primitives.c     ← DrawDot
@@ -46,21 +40,8 @@ Kode sumber dipisah menjadi modul-modul yang mandiri:
 │   ├── program2.h + program2.c   ← DDA Style Garis
 │   ├── program3.h + program3.c   ← Bresenham Kartesian
 │   ├── program4.h + program4.c   ← Bresenham Style Garis
-│   ├── program5.h + program5.c   ← Midpoint Circle
-│   ├── program6.h + program6.c   ← Flower of Life Pattern
-│   ├── program7.h + program7.c   ← Animated Flower of Life
-│   ├── program8.h + program8.c   ← Vesica Piscis Statis
-│   ├── program9.h + program9.c   ← Vesica Piscis Pergeseran Jari-Jari
 │   ├── about.h + about.c         ← Halaman About
 │   └── menu.h + menu.c           ← Menu Utama
-│
-├── docs/
-│   ├── PROGRAM5_MIDCIRCLE.md     ← Dokumentasi algoritma Midpoint Circle
-│   ├── PROGRAM6_FLOWER_OF_LIFE.md ← Dokumentasi Flower of Life Pattern
-│   ├── PROGRAM7_VESICA_PISCIS.md ← Dokumentasi Animated Vesica Piscis
-│   ├── PROGRAM8_VESICA_PISCIS_STATIS.md ← Dokumentasi Vesica Piscis Statis
-│   ├── PROGRAM9_QUARTER_ARC_VESICA.md   ← Dokumentasi Vesica Piscis Pergeseran Jari-Jari
-│   └── PROGRAM8_VS_PROGRAM9_PERBANDINGAN.md ← Perbandingan Program 8 & 9
 │
 ├── Makefile                      ← Build Linux/macOS (pkg-config)
 ├── Makefile.win                  ← Build Windows (MinGW + raylib manual)
@@ -91,7 +72,7 @@ Pastikan Raylib sudah diunduh dan sesuaikan path di `Makefile.win` (lihat koment
 
 | Tombol | Fungsi |
 |--------|--------|
-| `1` – `9` | Membuka program |
+| `1` – `4` | Membuka program |
 | `A` | Membuka halaman About |
 | `ESC` atau `BACKSPACE` | Kembali ke menu |
 | Klik tombol `< BACK` | Kembali ke menu (mouse) |
@@ -419,269 +400,30 @@ Dengan optimasi iterasi yang kita lakukan, Dashed Bresenham secara eksklusif men
 
 ---
 
-## Program 5 — Algoritma Midpoint Circle
+## Perbandingan DDA vs Bresenham
 
-### Konsep Matematika
+| Aspek | DDA | Bresenham |
+|-------|-----|-----------|
+| Tipe data | `float` | `int` saja |
+| Operasi per langkah | tambah float, `roundf()` | ×2, perbandingan, tambah int |
+| Kemungkinan error | Round-off float pada garis panjang | Tidak ada — integer exact |
+| Kemudahan dipahami | Sangat mudah | Perlu memahami decision parameter |
+| Kecepatan relatif | Lambat (FPU) | Cepat (ALU integer) |
+| Cocok untuk | Edukasi, prototyping | Produksi, embedded, GPU pipeline |
+| Jumlah piksel (contoh 5px) | 6 piksel | 6 piksel — **sama** |
 
-**Algoritma Midpoint Circle** (juga dikenal sebagai Bresenham Circle Algorithm) menggambar lingkaran menggunakan hanya operasi integer, tanpa perhitungan floating-point atau fungsi trigonometri.
-
-#### 8-Way Symmetry
-
-Lingkaran memiliki simetri pada 8 bagian. Dengan menghitung satu titik (x, y), kita bisa mendapatkan 8 titik lainnya secara gratis:
-
-```
-(cx + x, cy + y)  ← Oktan 1      (cx - x, cy - y)  ← Oktan 5
-(cx + y, cy + x)  ← Oktan 2      (cx - y, cy - x)  ← Oktan 6
-(cx + y, cy - x)  ← Oktan 3      (cx - y, cy + x)  ← Oktan 7
-(cx + x, cy - y)  ← Oktan 4      (cx - x, cy + y)  ← Oktan 8
-```
-
-Dengan demikian, kita hanya perlu menghitung 1/8 lingkaran (oktan pertama), dan sisanya didapat dari simetri.
-
-### Algoritma
-
-**Inisialisasi:**
-```
-x = 0
-y = r
-d = 3 - 2 × r    ← Decision parameter awal
-```
-
-**Iterasi** (untuk setiap langkah dari x = 0 hingga x ≥ y):
-
-1. Plot 8 titik simetri
-2. Evaluasi decision parameter:
-   - Jika `d < 0`: Pilih titik **E (East)** → `d = d + 4×x + 6`
-   - Jika `d ≥ 0`: Pilih titik **SE (South-East)** → `d = d + 4×(x - y) + 10` dan `y--`
-3. Increment: `x++`
-
-### Contoh Perhitungan — Lingkaran r = 5
-
-**Inisialisasi:** `x = 0, y = 5, d = 3 - 2×5 = -7`
-
-| Langkah | x | y | d | Kondisi | Aksi |
-|---------|---|---|---|---------|------|
-| 0 | 0 | 5 | -7 | d < 0 | E: d = -7 + 0 + 6 = -1 |
-| 1 | 1 | 5 | -1 | d < 0 | E: d = -1 + 4 + 6 = 9 |
-| 2 | 2 | 5 | 9 | d ≥ 0 | SE: d = 9 + 4(2-5) + 10 = 7, y=4 |
-| 3 | 3 | 4 | 7 | d ≥ 0 | SE: d = 7 + 4(3-4) + 10 = 13, y=3 |
-| 4 | 4 | 3 | - | - | **BERHENTI** (x ≥ y) |
-
-### Implementasi C
-
-```c
-// File: src/algo/midcircle.c
-void Midcircle(int centerX, int centerY, int radius, Color color) {
-    if (radius <= 0) {
-        DrawPixel(centerX, centerY, color);
-        return;
-    }
-    
-    int x = 0;
-    int y = radius;
-    int d = 3 - 2 * radius;  // Decision parameter awal
-    
-    while (y >= x) {
-        // Plot 8 titik simetri
-        DrawPixel(centerX + x, centerY + y, color);
-        DrawPixel(centerX + y, centerY + x, color);
-        DrawPixel(centerX + y, centerY - x, color);
-        DrawPixel(centerX + x, centerY - y, color);
-        DrawPixel(centerX - x, centerY - y, color);
-        DrawPixel(centerX - y, centerY - x, color);
-        DrawPixel(centerX - y, centerY + x, color);
-        DrawPixel(centerX - x, centerY + y, color);
-        
-        if (d < 0) {
-            d = d + 4 * x + 6;
-        } else {
-            d = d + 4 * (x - y) + 10;
-            y--;
-        }
-        x++;
-    }
-}
-```
-
-### Variasi Lingkaran
-
-| Fungsi | Deskripsi |
-|--------|-----------|
-| `Midcircle()` | Lingkaran standar (outline) |
-| `MidcircleFilled()` | Lingkaran berisi (solid) |
-| `MidcircleThick()` | Lingkaran dengan ketebalan |
-| `MidcircleDashed()` | Lingkaran putus-putus |
+> Jumlah piksel biasanya identik. Perbedaan ada pada **efisiensi komputasi**, bukan visual.
 
 ---
 
-## Program 6 — Flower of Life Pattern
-
-### Konsep Matematika
-
-**Flower of Life** adalah pola geometri sakral yang terdiri dari banyak lingkaran yang saling beririsan. Pola ini dibentuk dengan:
-- 1 lingkaran pusat
-- 6 lingkaran "kelopak" yang berpusat di tepi lingkaran pusat
-- Jarak pusat kelopak ke pusat utama = radius lingkaran
-
-### Struktur Pola
-
-```
-        Utara (0, -R)
-           ●
-           │
-Barat ●────●────● Timur
-(-R,0) │    │    (R, 0)
-       │    │
-        ●────●
-        Selatan (0, R)
-```
-
-### Koordinat 6 Kelopak
-
-| Arah | Offset X | Offset Y |
-|------|----------|----------|
-| Utara | 0 | -R |
-| Selatan | 0 | +R |
-| Timur | +R | 0 |
-| Barat | -R | 0 |
-| Timur Laut | +R×0.866 | -R/2 |
-| Barat Daya | -R×0.866 | +R/2 |
-| Barat Laut | -R×0.866 | -R/2 |
-| Tenggara | +R×0.866 | +R/2 |
-
-### Implementasi
-
-Program6 menggunakan fungsi [`Midcircle()`](src/algo/midcircle.c:39) untuk menggambar:
-1. Lingkaran pusat (putih)
-2. 6-8 lingkaran kelopak dengan warna berbeda
-3. Grid kartesian sebagai referensi
-
----
-
-## Program 7 — Lingkaran ke Vesica Piscis
-
-### Konsep
-
-Program7 menampilkan animasi transisi dari **lingkaran penuh** ke **Vesica Piscis** (bentuk lensa/almond) menggunakan teknik pemotongan sudut dinamis.
-
-### Apa itu Vesica Piscis?
-
-**Vesica Piscis** (Latin: "kantung ikan") adalah bentuk lensa yang terbentuk dari irisan dua lingkaran dengan radius sama, di mana pusat masing-masing lingkaran terletak di tepi lingkaran lainnya.
-
-```
-    Lingkaran 1       Vesica Piscis       Lingkaran 2
-       ○ ────────────── ◢◣ ────────────── ○
-                 (bentuk lensa)
-```
-
-### Properti Matematis
-
-| Properti | Nilai |
-|----------|-------|
-| Busur dari setiap lingkaran | 120° (2/3 π radian) |
-| Rasio lebar:tinggi | √3 : 1 |
-| Luas | (2π/3 - √3/2) × r² |
-
-### Algoritma Animasi Geometris
-
-Kunci animasi adalah perubahan **halfArc** (setengah busur) secara dinamis:
-
-```c
-void DrawVesicaPiscisAnim(int cx1, int cy1, int cx2, int cy2, int r, float animProgress, Color col) {
-    float angleToCenter = atan2f(dy, dx);
-    
-    // Saat animProgress = 0.0, halfArc = 180° → Lingkaran Penuh (360°)
-    // Saat animProgress = 1.0, halfArc = 60°  → Vesica Piscis (120°)
-    float targetHalfArc = PI / 3.0f;  // 60 derajat
-    float currentHalfArc = PI - (animProgress * (PI - targetHalfArc));
-    
-    // Gambar busur dari kedua lingkaran
-    DrawArcFromAngle(cx1, cy1, r, angleToCenter - currentHalfArc, angleToCenter + currentHalfArc, col);
-    DrawArcFromAngle(cx2, cy2, r, angleToCenter + PI - currentHalfArc, angleToCenter + PI + currentHalfArc, col);
-}
-```
-
-### Fase Animasi
-
-| Fase | Progress | halfArc | Busur | Deskripsi |
-|------|----------|---------|-------|-----------|
-| 1 | 0% - 30% | 180° | 360° | Lingkaran penuh ditahan |
-| 2 | 30% - 70% | 180° → 60° | 360° → 120° | Pemotongan busur dinamis |
-| 3 | 70% - 100% | 60° | 120° | Vesica Piscis penuh ditahan |
-
----
-
-## Perbandingan DDA vs Bresenham vs Midcircle
-
-| Aspek | DDA | Bresenham | Midcircle |
-|-------|-----|-----------|-----------|
-| Tipe data | `float` | `int` saja | `int` saja |
-| Operasi per langkah | tambah float, `roundf()` | ×2, perbandingan, tambah int | ×4, perbandingan, tambah int |
-| Kemungkinan error | Round-off float pada garis panjang | Tidak ada — integer exact | Tidak ada — integer exact |
-| Kemudahan dipahami | Sangat mudah | Perlu memahami decision parameter | Perlu memahami 8-way symmetry |
-| Kecepatan relatif | Lambat (FPU) | Cepat (ALU integer) | Cepat (ALU integer) |
-| Cocok untuk | Edukasi, prototyping | Produksi, embedded, GPU pipeline | Produksi, embedded, GPU pipeline |
-
-> Jumlah piksel biasanya identik untuk garis. Perbedaan ada pada **efisiensi komputasi**, bukan visual.
-
----
-
-## Program 8 — Vesica Piscis (4 Kelopak Murni)
-
-### Konsep
-
-Program 8 menggambar 4 kelopak Vesica Piscis yang berpangkal di `(cx, cy)`, menggunakan pendekatan **pangkal-ke-ujung**: titik pangkal ditetapkan terlebih dahulu, lalu posisi pusat lingkaran C1 dan C2 dihitung menggunakan trigonometri dari titik tengah kelopak `PM`.
-
-Lihat dokumentasi lengkap: [PROGRAM8_VESICA_PISCIS_STATIS.md](docs/PROGRAM8_VESICA_PISCIS_STATIS.md)
-
----
-
-## Program 9 — Vesica Piscis (Pergeseran Titik Jari-Jari)
-
-### Konsep
-
-Program 9 menggambar 4 lensa Vesica Piscis menghadap 4 arah mata angin, semua ujung dalam bertemu di titik `(0, 0)`. Menggunakan pendekatan **pergeseran titik jari-jari**: titik TENGAH lensa ditetapkan terlebih dahulu, lalu dua pusat lingkaran C1 dan C2 digeser masing-masing sejauh `r/2`.
-
-### Algoritma Pergeseran
-
-```
-Diberikan: titik tengah lensa (mx, my), jari-jari r, sudut sumbu-pendek angle
-
-C1 = (mx − r/2·cos(angle),  my − r/2·sin(angle))
-C2 = (mx + r/2·cos(angle),  my + r/2·sin(angle))
-
-Jarak C1–C2 = r  →  segitiga sama sisi → sudut pertemuan 60°
-→ Setiap busur = 120° (2 × 60°)
-```
-
-### Layout 4 Arah Mata Angin
-
-```
-      angle=0, pusat=(cx, cy−h)     ← h = R×√3/2
-              │
-              ▼
-   (cx−h) ───┼─── (cx+h)
- angle=π/2   │   angle=π/2
-              ↑
-      angle=0, pusat=(cx, cy+h)
-```
-
-| Arah | Pusat Lensa | angle | Warna |
-|---|---|---|---|
-| Utara | `(cx, cy − R·√3/2)` | `0` | Merah |
-| Selatan | `(cx, cy + R·√3/2)` | `0` | Biru |
-| Timur | `(cx + R·√3/2, cy)` | `π/2` | Hijau |
-| Barat | `(cx − R·√3/2, cy)` | `π/2` | Oranye |
-
-Lihat dokumentasi lengkap: [PROGRAM9_QUARTER_ARC_VESICA.md](docs/PROGRAM9_QUARTER_ARC_VESICA.md)  
-Lihat perbandingan P8 vs P9: [PROGRAM8_VS_PROGRAM9_PERBANDINGAN.md](docs/PROGRAM8_VS_PROGRAM9_PERBANDINGAN.md)
+## Primitif yang Digunakan
 
 Satu-satunya fungsi Raylib untuk menggambar:
 ```c
 DrawPixel(x, y, color);   // menempatkan satu piksel di koordinat layar
 ```
 
-Semua garis, lingkaran, pola, titik endpoint, grid, dan avatar di halaman About dibangun dari fungsi kustom di atas `DrawPixel()`.
+Semua garis, pola, titik endpoint, grid, dan avatar di halaman About dibangun dari fungsi kustom di atas `DrawPixel()`.
 
 ---
 

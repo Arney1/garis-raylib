@@ -1,7 +1,6 @@
 #include "src/screens/about.h"
 #include "src/algo/dda.h"
 #include "src/algo/bresenham.h"
-#include "src/algo/midcircle.h"
 #include "src/ui/back_button.h"
 #include "screen_type.h"
 #include "raylib.h"
@@ -50,19 +49,19 @@ void DrawAbout(void) {
     DrawText("Library     : Raylib 5.5  |  Bahasa: C", cardX + 40, avY + avR + 146, 16, LIGHTGRAY);
 
     int sumY = cardY + cardH + 20;
-    int sumW = 115, sumH = 64, sumGap = 8;
-    int sumStartX = SCREEN_W/2 - (7*sumW + 6*sumGap)/2;
+    int sumW = 220, sumH = 64, sumGap = 14;
+    int sumStartX = SCREEN_W/2 - (4*sumW + 3*sumGap)/2;
 
-    const char *pLabels[] = {"Program 1","Program 2","Program 3","Program 4","Program 5","Program 6","Program 7"};
-    const char *pDesc[]   = {"DDA Kartesian","DDA Style","Bres Kartesian","Bres Style","Midcircle","Flower of Life","Animated"};
-    Color pColors[] = {SKYBLUE, VIOLET, GREEN, ORANGE, MAGENTA, (Color){100,220,200,255}, (Color){200,150,255,255}};
+    const char *pLabels[] = {"Program 1","Program 2","Program 3","Program 4"};
+    const char *pDesc[]   = {"DDA Kartesian","DDA Style Garis","Bres Kartesian","Bres Style Garis"};
+    Color pColors[] = {SKYBLUE, VIOLET, GREEN, ORANGE};
 
-    for (int i = 0; i < 7; i++) {
+    for (int i = 0; i < 4; i++) {
         int bx = sumStartX + i*(sumW + sumGap);
         DrawRectangleRounded((Rectangle){bx, sumY, sumW, sumH}, 0.15f, 6, (Color){20,20,45,255});
         DrawRectangleRoundedLines((Rectangle){bx, sumY, sumW, sumH}, 0.15f, 6, pColors[i]);
-        DrawText(pLabels[i], bx + 8, sumY + 10, 11, pColors[i]);
-        DrawText(pDesc[i],   bx + 8, sumY + 32, 10, LIGHTGRAY);
+        DrawText(pLabels[i], bx + 12, sumY + 10, 15, pColors[i]);
+        DrawText(pDesc[i],   bx + 12, sumY + 32, 13, LIGHTGRAY);
     }
 
     int decorY = sumY + sumH + 30;
