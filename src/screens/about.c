@@ -31,16 +31,18 @@ void DrawAbout(void) {
         int hw = (int)sqrtf((float)(avR*avR - dy2*dy2));
         DDALine(avX - hw, avY + dy2, avX + hw, avY + dy2, (Color){25, 40, 90, 255});
     }
-    DDALine(avX-14, avY-24, avX-14, avY+24, WHITE);
-    DDALine(avX-14, avY-24, avX+10, avY-24, WHITE);
-    DDALine(avX+10, avY-24, avX+14, avY-16, WHITE);
-    DDALine(avX+14, avY-16, avX+10, avY-8, WHITE);
-    DDALine(avX+10, avY-8, avX-14, avY-8, WHITE);
-    DDALine(avX+2, avY-8, avX+18, avY+24, WHITE);
+    DDALine(avX, avY-24, avX-24, avY+24, WHITE);
+    DDALine(avX+24, avY+24, avX, avY-24, WHITE);
+    DDALine(avX+12, avY, avX-12, avY, WHITE);
+    // DDALine(avX-14, avY-24, avX+10, avY-24, WHITE);
+    // DDALine(avX+10, avY-24, avX+14, avY-16, WHITE);
+    // DDALine(avX+14, avY-16, avX+10, avY-8, WHITE);
+    // DDALine(avX+10, avY-8, avX-14, avY-8, WHITE);
+    // DDALine(avX+2, avY-8, avX+18, avY+24, WHITE);
 
     int textX = SCREEN_W/2 - 100;
-    DrawText("Rizqi", textX, avY + avR + 18, 32, WHITE);
-    DrawText("NIM : 0811", textX - 10, avY + avR + 58, 20, (Color){160, 190, 255, 255});
+    DrawText("Arkan", textX, avY + avR + 18, 32, WHITE);
+    DrawText("NIM : 241524033", textX - 10, avY + avR + 58, 20, (Color){160, 190, 255, 255});
 
     DDALine(cardX + 40, avY + avR + 88, cardX + cardW - 40, avY + avR + 88, (Color){60, 80, 160, 255});
 
@@ -71,5 +73,5 @@ void DrawAbout(void) {
     Bres_DashedLine(SCREEN_W/2 + 50, decorY + 24, SCREEN_W/2 + 200, decorY + 24, 14, 8, (Color){80,200,140,200});
     DrawText("Bresenham", SCREEN_W/2 + 210, decorY + 16, 13, (Color){80,200,140,255});
 
-    DrawText("[ESC/BACKSPACE] Kembali  |  Klik BACK", 12, SCREEN_H-22, 13, DARKGRAY);
+    DrawText("[ESC] Keluar [BACKSPACE] Kembali  |  Klik BACK", 12, SCREEN_H-22, 13, DARKGRAY);
 }

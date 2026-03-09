@@ -64,7 +64,7 @@ void DrawMenu(void) {
 
     DrawRectangleRounded((Rectangle){(c1 + c2)/2,r[2],cW,cH}, 0.1f, 8, (Color){50,10,10,255});
         DrawRectangleRoundedLines((Rectangle){(c1 + c2)/2,r[2],cW,cH}, 0.1f, 8, RED);
-        DrawText("Tugas 1", (c1 + c2)/2+18, r[2]+14, 22, RED);
+        DrawText("TUGAS 1", (c1 + c2)/2+18, r[2]+14, 22, RED);
         DrawText("Nama panggilan dalam garis", (c1 + c2)/2+18, r[2]+42, 16, WHITE);
         int startY = r[2]+64, endY = r[2]+100, midY = startY + (endY-startY)/2;
             int x = (c1 + c2)/2+18, spx = 10;
@@ -112,6 +112,6 @@ void DrawMenu(void) {
 
     DrawRectangle(0, SCREEN_H-50, SCREEN_W, 50, (Color){15,15,35,255});
     DDALine(0, SCREEN_H-50, SCREEN_W, SCREEN_H-50, (Color){60,80,160,255});
-    DrawText("[1] P1  [2] P2  [3] P3  [4] P4 [5] P5 [A] About  |  [ESC] Keluar [Backspace] Back",
+    DrawText("[1] P1  [2] P2  [3] P3  [4] P4 [5] T1 [A] About  |  [ESC] Keluar [Backspace] Back",
              SCREEN_W/2-300, SCREEN_H-33, 16, GRAY);
 }
