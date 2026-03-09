@@ -51,14 +51,14 @@ void DrawAbout(void) {
     DrawText("Library     : Raylib 5.5  |  Bahasa: C", cardX + 40, avY + avR + 146, 16, LIGHTGRAY);
 
     int sumY = cardY + cardH + 20;
-    int sumW = 220, sumH = 64, sumGap = 14;
-    int sumStartX = SCREEN_W/2 - (4*sumW + 3*sumGap)/2;
+    int sumW = 170, sumH = 64, sumGap = 14;
+    int sumStartX = SCREEN_W/2 - (5*sumW + 4*sumGap)/2;
 
-    const char *pLabels[] = {"Program 1","Program 2","Program 3","Program 4"};
-    const char *pDesc[]   = {"DDA Kartesian","DDA Style Garis","Bres Kartesian","Bres Style Garis"};
-    Color pColors[] = {SKYBLUE, VIOLET, GREEN, ORANGE};
+    const char *pLabels[] = {"Program 1","Program 2","Program 3","Program 4", "Tugas 1"};
+    const char *pDesc[]   = {"DDA Kartesian","DDA Style Garis","Bres Kartesian","Bres Style Garis", "Nama Panggilan"};
+    Color pColors[] = {SKYBLUE, VIOLET, GREEN, ORANGE, RED};
 
-    for (int i = 0; i < 4; i++) {
+    for (int i = 0; i < 5; i++) {
         int bx = sumStartX + i*(sumW + sumGap);
         DrawRectangleRounded((Rectangle){bx, sumY, sumW, sumH}, 0.15f, 6, (Color){20,20,45,255});
         DrawRectangleRoundedLines((Rectangle){bx, sumY, sumW, sumH}, 0.15f, 6, pColors[i]);
