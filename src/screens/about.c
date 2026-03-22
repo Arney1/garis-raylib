@@ -41,7 +41,7 @@ void DrawAbout(void) {
     // DDALine(avX+2, avY-8, avX+18, avY+24, WHITE);
 
     int textX = SCREEN_W/2 - 100;
-    DrawText("Arkan Ramadhan Nugraha", textX, avY + avR + 18, 32, WHITE);
+    DrawText("Arkan Ramadhan Nugraha", textX - 100, avY + avR + 18, 32, WHITE);
     DrawText("NIM : 241524033", textX - 10, avY + avR + 58, 20, (Color){160, 190, 255, 255});
 
     DDALine(cardX + 40, avY + avR + 88, cardX + cardW - 40, avY + avR + 88, (Color){60, 80, 160, 255});
