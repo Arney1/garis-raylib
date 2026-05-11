@@ -1,14 +1,20 @@
-#include "src/screens/menu.h"
 #include "coords.h"
 #include "raylib.h"
 #include "screen_type.h"
 #include "src/algo/bresenham.h"
 #include "src/algo/dda.h"
 #include "src/algo/midcircle.h"
+#include "src/screens/menu.h"
 
 // Global variable to track clicked program
 static int clickedProgram = 0;
 static int activeTab = 1;
+
+void SetMenuActiveTab(int tab) {
+  if (tab == 1 || tab == 2)
+    activeTab = tab;
+}
+
 int GetClickedProgram(void) {
   int result = clickedProgram;
   clickedProgram = 0;
@@ -37,6 +43,7 @@ void DrawMenu(void) {
 
   int tab1BtnX = SCREEN_W / 2 - 165, tab1BtnY = rr + 40;
   Color tab1Color;
+  Color tab2Color;
   int tab1Hover =
       CheckCollisionPointRec(mouse, (Rectangle){tab1BtnX, tab1BtnY, 160, 36});
   if (tab1Hover && mousePressed)
@@ -48,7 +55,7 @@ void DrawMenu(void) {
     activeTab = 2;
   if (activeTab == 1) {
     tab1Color = (Color){80, 130, 220, 255};
-    ab2Color = (Color){25, 35, 70, 220};
+    tab2Color = (Color){25, 35, 70, 220};
 
     DrawRectangleRounded((Rectangle){tab1BtnX, tab1BtnY, 160, 36}, 0.3f, 6,
                          tab1Color);
@@ -266,10 +273,85 @@ void DrawMenu(void) {
     DrawRectangleRoundedLines((Rectangle){tab2BtnX, tab2BtnY, 160, 36}, 0.3f, 6,
                               tab2Hover ? WHITE : (Color){80, 110, 200, 255});
     DrawText("[ T ] Tugas", tab2BtnX + 22, tab2BtnY + 10, 16, WHITE);
+
+    DrawText("LATIHAN SOAL PER MODUL (klik untuk buka screen tugas)",
+             SCREEN_W / 2 - 240, tab2BtnY + 50, 14, LIGHTGRAY);
+
+    int cardW = 450, cardH = 50;
+    int leftX = SCREEN_W / 2 - cardW - 15;
+    int rightX = SCREEN_W / 2 + 15;
+    int y0 = tab2BtnY + 74;
+    int gapY = 56;
+
+    struct {
+      int id;
+      const char *title;
+      const char *subtitle;
+      Color base;
+      Color accent;
+    } tugas[] = {
+        {101, "TUGAS 1.1", "Modul 1 - Soal 1 (Midcircle)",
+         (Color){20, 45, 70, 255}, SKYBLUE},
+        {102, "TUGAS 1.2", "Modul 1 - Soal 2 (Decision parameter)",
+         (Color){20, 45, 70, 255}, SKYBLUE},
+        {103, "TUGAS 1.3", "Modul 1 - Soal 3 (Setengah lingkaran)",
+         (Color){20, 45, 70, 255}, SKYBLUE},
+
+        {201, "TUGAS 2.1", "Modul 2 - Soal 1 (Koordinat kelopak)",
+         (Color){30, 50, 35, 255}, GREEN},
+        {202, "TUGAS 2.2", "Modul 2 - Soal 2 (Analisis pembulatan)",
+         (Color){30, 50, 35, 255}, GREEN},
+        {203, "TUGAS 2.3", "Modul 2 - Soal 3 (Rotasi Flower)",
+         (Color){30, 50, 35, 255}, GREEN},
+
+        {301, "TUGAS 3.1", "Modul 3 - Soal 1 (halfArc)",
+         (Color){45, 30, 60, 255}, VIOLET},
+        {302, "TUGAS 3.2", "Modul 3 - Soal 2 (Wrap-around)",
+         (Color){45, 30, 60, 255}, VIOLET},
+        {303, "TUGAS 3.3", "Modul 3 - Soal 3 (Smoothstep)",
+         (Color){45, 30, 60, 255}, VIOLET},
+
+        {401, "TUGAS 4.1", "Modul 4 - Soal 1 (PM, C1, C2)",
+         (Color){55, 35, 20, 255}, ORANGE},
+        {402, "TUGAS 4.2", "Modul 4 - Soal 2 (roundf vs trunc)",
+         (Color){55, 35, 20, 255}, ORANGE},
+        {403, "TUGAS 4.3", "Modul 4 - Soal 3 (DrawPetalAnim)",
+         (Color){55, 35, 20, 255}, ORANGE},
+
+        {501, "TUGAS 5.1", "Modul 5 - Soal 1 (Lensa diagonal)",
+         (Color){55, 20, 35, 255}, MAGENTA},
+        {502, "TUGAS 5.2", "Modul 5 - Soal 2 (Bukti ekuivalen)",
+         (Color){55, 20, 35, 255}, MAGENTA},
+        {503, "TUGAS 5.3", "Modul 5 - Soal 3 (Gradien HSV)",
+         (Color){55, 20, 35, 255}, MAGENTA},
+    };
+
+    for (int i = 0; i < 15; i++) {
+      int col = i % 2;
+      int row = i / 2;
+      int x = col == 0 ? leftX : rightX;
+      int y = y0 + row * gapY;
+      int hover =
+          CheckCollisionPointRec(mouse, (Rectangle){x, y, cardW, cardH});
+
+      DrawRectangleRounded((Rectangle){x, y, cardW, cardH}, 0.1f, 8,
+                           hover ? (Color){tugas[i].base.r + 15,
+                                           tugas[i].base.g + 15,
+                                           tugas[i].base.b + 15, 255}
+                                 : tugas[i].base);
+      DrawRectangleRoundedLines((Rectangle){x, y, cardW, cardH}, 0.1f, 8,
+                                hover ? WHITE : tugas[i].accent);
+
+      DrawText(tugas[i].title, x + 14, y + 8, 16, tugas[i].accent);
+      DrawText(tugas[i].subtitle, x + 14, y + 28, 11, LIGHTGRAY);
+
+      if (hover && mousePressed)
+        clickedProgram = tugas[i].id;
+    }
   }
   // Footer
   DrawRectangle(0, SCREEN_H - 50, SCREEN_W, 50, (Color){15, 15, 35, 255});
   DDALine(0, SCREEN_H - 50, SCREEN_W, SCREEN_H - 50, (Color){60, 80, 160, 255});
-  DrawText("[1-9] Program  [A] About  |  [ESC] Keluar", SCREEN_W / 2 - 180,
-           SCREEN_H - 33, 16, GRAY);
+  DrawText("[1-9] Program  [TAB: Tugas] [A] About  |  [ESC] Keluar",
+           SCREEN_W / 2 - 235, SCREEN_H - 33, 16, GRAY);
 }

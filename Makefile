@@ -21,6 +21,21 @@ SRCS = main.c \
        src/screens/program7.c \
        src/screens/program8.c \
        src/screens/program9.c \
+       src/screens/tugas1_1.c \
+       src/screens/tugas1_2.c \
+       src/screens/tugas1_3.c \
+       src/screens/tugas2_1.c \
+       src/screens/tugas2_2.c \
+       src/screens/tugas2_3.c \
+       src/screens/tugas3_1.c \
+       src/screens/tugas3_2.c \
+       src/screens/tugas3_3.c \
+       src/screens/tugas4_1.c \
+       src/screens/tugas4_2.c \
+       src/screens/tugas4_3.c \
+       src/screens/tugas5_1.c \
+       src/screens/tugas5_2.c \
+       src/screens/tugas5_3.c \
        src/screens/about.c \
        src/screens/menu.c
 

@@ -3,5 +3,6 @@
 
 void DrawMenu(void);
 int GetClickedProgram(void);
+void SetMenuActiveTab(int tab);
 
 #endif
