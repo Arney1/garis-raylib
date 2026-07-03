@@ -4,6 +4,10 @@
 #define SCREEN_W 1000
 #define SCREEN_H 700
 
-typedef enum { MENU, PROGRAM1, PROGRAM2, PROGRAM3, PROGRAM4, PROGRAM30, PROGRAM31, PROGRAM41, ABOUT } Screen;
+typedef enum {
+    MENU,
+    TUGAS1,
+    ABOUT
+} Screen;
 
 #endif

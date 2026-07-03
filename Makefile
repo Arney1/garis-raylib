@@ -1,25 +1,19 @@
-CC     = gcc
-CFLAGS = -Wall -O2 -I. $(shell pkg-config --cflags raylib)
-LIBS   = $(shell pkg-config --libs raylib) -lm -ldl -lpthread
+CC      = gcc
+CFLAGS  = -Wall -O2 -I. $(shell pkg-config --cflags raylib)
+LIBS    = $(shell pkg-config --libs raylib) -lm -ldl -lpthread
 
-TARGET = grafika_dda
+TARGET = tugas1_grafika
 
 SRCS = main.c \
        coords.c \
-       src/algo/dda.c \
-       src/algo/bresenham.c \
        src/algo/bresellipse.c \
        src/algo/midellipse.c \
+       src/algo/dda.c \
+       src/algo/bresenham.c \
+       src/algo/ellipse_transform.c \
        src/ui/primitives.c \
        src/ui/back_button.c \
-       src/ui/cartesian.c \
-       src/screens/program1.c \
-       src/screens/program2.c \
-       src/screens/program3.c \
-       src/screens/program4.c \
-       src/screens/program30.c \
-       src/screens/program31.c \
-       src/screens/program41.c \
+       src/screens/tugas1_creation.c \
        src/screens/about.c \
        src/screens/menu.c
 
