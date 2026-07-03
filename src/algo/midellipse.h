@@ -4,21 +4,23 @@
 #include "raylib.h"
 
 /*
- * Midpoint Ellipse Algorithm
+ * Midpoint Ellipse Algorithm  (versi Tugas 1)
  *
- * Algoritma untuk menggambar elips menggunakan decision parameter.
- * Elips digambar dalam 2 region:
- *   Region 1: |slope| < 1 (gradien landai) - iterasi berdasarkan x
- *   Region 2: |slope| >= 1 (gradien curam) - iterasi berdasarkan y
+ * Menggambar elips dengan membagi kurva menjadi 2 region berdasarkan
+ * decision parameter (di-scale x4 supaya tetap integer, tanpa pembagian):
  *
- * Decision parameter menentukan piksel mana yang dipilih untuk
- * mendekati kurva elips ideal.
+ *   Region 1 (|slope| < 1) : iterasi x++, p1 = ry² - rx²*ry + rx²/4
+ *   Region 2 (|slope| >= 1): iterasi y--, p2 = ry²*(x+0.5)² + rx²*(y-1)² - rx²*ry²
  *
- * Rumus elips: (x/a)² + (y/b)² = 1
- *   a = radius horizontal (rx)
- *   b = radius vertikal (ry)
+ * Simetri 4-kuadran: 1 titik dihitung -> digambar di 4 titik sekaligus.
+ *
+ * Selain versi outline, disediakan juga:
+ *   - MidpointEllipseFilled : elips solid (diisi penuh, per baris horizontal)
+ *   - MidpointEllipseThick  : elips tebal (beberapa elips konsentris berlapis)
  */
 
 void MidpointEllipse(int cx, int cy, int rx, int ry, Color color);
+void MidpointEllipseFilled(int cx, int cy, int rx, int ry, Color color);
+void MidpointEllipseThick(int cx, int cy, int rx, int ry, int thick, Color color);
 
 #endif
